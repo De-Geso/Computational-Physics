@@ -1,4 +1,4 @@
-! Compile with: gfortran -O3 -fdefault-real-8 GaussJordan.f90
+! Compile with: gfortran -O3 -fdefault-real-8 GJGeneral.f90
 
 program GaussianJordanian
 implicit none
@@ -28,19 +28,20 @@ recursive subroutine GaussJordan (n, A, B)
 	integer row(n), col(n), pivot(1)
 	forall (i = 1:n) row(i) = i
 	forall (j = 1:n) col(j) = j
-	! col is superfluous right now
+	! col is superfluous
 	
-	write (*,*) A(:,row(:))
-	write (*,*) ""
-	write (*,*) B(row(:))
-	write (*,*) ""
-	write (*,*) ""
+!	Show original matrix	
+!	write (*,*) A(:,row(:))
+!	write (*,*) ""
+!	write (*,*) B(row(:))
+!	write (*,*) ""
+!	write (*,*) ""
 	
 	do j = 1,n-1
 		! If the largest number in the column is zero, go next.
 		if (maxval(abs(A(j, row(j:)))) + (j-1) /= 0) then
 			pivot = maxloc(abs(A(j, row(j:)))) + (j-1)
-			write (*,*) "Pivot:", pivot
+			
 			! Swap rows
 			row([j,pivot]) = row([pivot,j])
 	
@@ -52,12 +53,12 @@ recursive subroutine GaussJordan (n, A, B)
 				A(:,row(i)) = A(:,row(i)) - &
 					(A(j,row(i))/A(j,row(j))) * A(:,row(j))
 		
-				! See if the right operation was performed
-				write (*,*) A(:,row(:))
-				write (*,*) ""
-				write (*,*) B(row(:))
-				write (*,*) ""
-				write (*,*) ""
+! See if the right operation was performed
+!				write (*,*) A(:,row(:))
+!				write (*,*) ""
+!				write (*,*) B(row(:))
+!				write (*,*) ""
+!				write (*,*) ""
 			end do
 		end if
 	end do
@@ -70,17 +71,9 @@ recursive subroutine GaussJordan (n, A, B)
 		end do
 		x(k) = x(k)/A(k,row(k))
 	end do
-	write (*,*) x
+	write (*,*) "x =", x
 	
 	return
 end subroutine
-
-! Chebyshev polynomial T_n(x)
-elemental function ChebyshevT(x, n)
-	real ChebyshevT, x; integer n
-	intent(in) x, n
-	
-	ChebyshevT = cos(n*acos(x))
-end function
 
 end program
