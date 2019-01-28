@@ -9,15 +9,15 @@ tail -4 DataLinear10 > MaximalError.txt
 gnuplot -persist <<-EOFMarker
 set title "Approximation of f(x) (Uniformly spaced x, n=10)"
 set key
-plot 'DataLinear10' using 1:2 with lines title "Approx",\
-	'DataLinear10' using 1:3 with lines title "Exact"
+plot 'DataLinear10' index 0 using 1:2 with lines title "Approx",\
+	'DataLinear10' index 0 using 1:3 with lines title "Exact"
 EOFMarker
 # Plot f'(x)
 gnuplot -persist <<-EOFMarker
 set title "Approximation of f'(x) (Uniformly spaced x, n=10)"
 set key
-plot 'DataLinear10' using 1:4 with lines title "Approx",\
-	'DataLinear10' using 1:5 with lines title "Exact"
+plot 'DataLinear10' index 1 using 1:2 with lines title "Approx",\
+	'DataLinear10' index 1 using 1:3 with lines title "Exact"
 EOFMarker
 
 # UNIFORM X, N = 100
@@ -28,15 +28,15 @@ tail -4 DataLinear100 >> MaximalError.txt
 gnuplot -persist <<-EOFMarker
 set title "Approximation of f(x) (Uniformly spaced x, n=100)"
 set key
-plot 'DataLinear100' using 1:2 with lines title "Approx",\
-	'DataLinear100' using 1:3 with lines title "Exact"
+plot 'DataLinear100' index 0 using 1:2 with lines title "Approx",\
+	'DataLinear100' index 0 using 1:3 with lines title "Exact"
 EOFMarker
 # Plot f'(x)
 gnuplot -persist <<-EOFMarker
 set title "Approximation of f'(x) (Uniformly spaced x, n=100)"
 set key
-plot 'DataLinear100' using 1:4 with lines title "Approx",\
-	'DataLinear100' using 1:5 with lines title "Exact"
+plot 'DataLinear100' index 1 using 1:2 with lines title "Approx",\
+	'DataLinear100' index 1 using 1:3 with lines title "Exact"
 EOFMarker
 
 # X AT ZEROS, N = 10
@@ -47,15 +47,15 @@ tail -4 DataZeros10 >> MaximalError.txt
 gnuplot -persist <<-EOFMarker
 set title "Approximation of f(x) (x at zeros, n=10)"
 set key
-plot 'DataZeros10' using 1:2 with lines title "Approx",\
-	'DataZeros10' using 1:3 with lines title "Exact"
+plot 'DataZeros10' index 0 using 1:2 with lines title "Approx",\
+	'DataZeros10' index 0 using 1:3 with lines title "Exact"
 EOFMarker
 # Plot f'(x)
 gnuplot -persist <<-EOFMarker
 set title "Approximation of f'(x) (x at zeros, n=10)"
 set key
-plot 'DataZeros10' using 1:4 with lines title "Approx",\
-	'DataZeros10' using 1:5 with lines title "Exact"
+plot 'DataZeros10' index 1 using 1:2 with lines title "Approx",\
+	'DataZeros10' index 1 using 1:3 with lines title "Exact"
 EOFMarker
 
 # X AT ZEROS, N = 100
