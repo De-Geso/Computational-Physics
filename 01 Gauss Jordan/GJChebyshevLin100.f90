@@ -28,8 +28,8 @@ end forall
 ! row
 do j=1,n
 	do k=1,n
-		y(k,j) = ChebyshevT(x(j), k)
-		yP(k,j) = ChebyshevT(x(j),k)
+		y(k,j) = ChebyshevT(x(j), k-1)
+		yP(k,j) = ChebyshevT(x(j),k-1)
 	end do
 end do
 
@@ -48,9 +48,9 @@ do l=1,p
 	ApproxFP = 0
 	do m=1,n
 		ApproxF = ApproxF + Coefficients(m) * &
-			ChebyshevT(xF(l),m)
+			ChebyshevT(xF(l),m-1)
 		ApproxFP = ApproxFP + CoefficientsP(m) * &
-			ChebyshevT(xF(l),m)
+			ChebyshevT(xF(l),m-1)
 	end do
 	if (abs(DiffF) < abs(ExactF(l)-ApproxF)) then
 		LocF = xF(l)

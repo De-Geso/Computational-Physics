@@ -19,7 +19,7 @@ integer i, j, k, l, m, q
 
 ! Make the initial x range, and the exact values of the function
 forall (i=1:n)
-	x(i) = cos(pi/(n+1)*(i-1.0/2.0))
+	x(i) = cos(pi/(n)*(i-1.0/2.0))
 	Exact(i) = (1.0+10.0*x(i)**2.0)**(-1.0)
 	ExactP(i) = -20.0*x(i)/((1.0+10.0*x(i)**2.0)**(2.0))
 end forall
@@ -29,8 +29,8 @@ end forall
 ! row
 do j=1,n
 	do k=1,n
-		y(k,j) = ChebyshevT(x(j), k)
-		yP(k,j) = ChebyshevT(x(j),k)
+		y(k,j) = ChebyshevT(x(j), k-1)
+		yP(k,j) = ChebyshevT(x(j),k-1)
 	end do
 end do
 
@@ -39,7 +39,7 @@ call GaussJordan (n, yP, ExactP, CoefficientsP)
 
 !Make a much finer grid
 forall (q=1:p)
-	xF(q) = cos(pi/(p+1)*(q-1.0/2.0))
+	xF(q) = cos(pi/(p)*(q-1.0/2.0))
 	ExactF(q) = (1.0+10.0*xF(q)**2.0)**(-1.0)
 	ExactFP(q) = -20.0*xF(q)/((1.0+10.0*xF(q)**2.0)**(2.0))
 end forall
@@ -49,9 +49,9 @@ do l=1,p
 	ApproxFP = 0
 	do m=1,n
 		ApproxF = ApproxF + Coefficients(m) * &
-			ChebyshevT(xF(l),m)
+			ChebyshevT(xF(l),m-1)
 		ApproxFP = ApproxFP + CoefficientsP(m) * &
-			ChebyshevT(xF(l),m)
+			ChebyshevT(xF(l),m-1)
 	end do
 	if (abs(DiffF) < abs(ExactF(l)-ApproxF)) then
 		LocF = xF(l)

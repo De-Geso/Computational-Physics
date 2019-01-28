@@ -66,13 +66,13 @@ tail -4 DataZeros100 >> MaximalError.txt
 gnuplot -persist <<-EOFMarker
 set title "Approximation of f(x) (x at zeros, n=100)"
 set key
-plot 'DataZeros10' using 1:2 with lines title "Approx",\
-	'DataZeros10' using 1:3 with lines title "Exact"
+plot 'DataZeros100' using 1:2 with lines title "Approx",\
+	'DataZeros100' using 1:3 with lines title "Exact"
 EOFMarker
 # Plot f'(x)
 gnuplot -persist <<-EOFMarker
 set title "Approximation of f'(x) (x at zeros, n=100)"
 set key
-plot 'DataZeros10' using 1:4 with lines title "Approx",\
-	'DataZeros10' using 1:5 with lines title "Exact"
+plot 'DataZeros100' using 1:4 with lines title "Approx",\
+	'DataZeros100' using 1:5 with lines title "Exact"
 EOFMarker
