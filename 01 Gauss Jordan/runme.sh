@@ -76,3 +76,6 @@ set key
 plot 'DataZeros100' using 1:4 with lines title "Approx",\
 	'DataZeros100' using 1:5 with lines title "Exact"
 EOFMarker
+
+# Read the maximal errors.
+cat MaximalError.txt
