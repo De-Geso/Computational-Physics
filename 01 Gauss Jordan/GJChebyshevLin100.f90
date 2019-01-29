@@ -38,7 +38,7 @@ end do
 
 do j=1,n-1
 	do k=1,n-1
-		yP(k,j) = ChebyshevT(xP(j),k-1)
+		yP(k,j) = ChebyshevT(xP(j),k)
 	end do
 end do
 
@@ -66,25 +66,26 @@ do l=1,p
 		LocF = xF(l)
 		DiffF = ExactF(l)-ApproxF
 	end if
-	write (*,*) xF(l), ApproxF, ExactF(l)
+	write(*,*) xF(l), ApproxF, ExactF(l)
 end do
-write (*,*) ""
-write (*,*) ""
+write(*,*) ""
+write(*,*) ""
 
 do l=1,p-1
 	ApproxFP = 0
 	do m=1,n-1
 		ApproxFP = ApproxFP + CoefficientsP(m) * &
-			ChebyshevT(xFP(l),m-1)
+			ChebyshevT(xFP(l),m)
 	end do
 	if (abs(DiffFP) < abs(ExactFP(l)-ApproxFP)) then
 		LocFP = xFP(l)
 		DiffFP = ExactFP(l)-ApproxFP
 	end if
-	write (*,*) xFP(l), ApproxFP, ExactFP(l)
+	write(*,*) xFP(l), ApproxFP, ExactFP(l)
 end do
-write (*,*) ""
-write (*,*) ""
+
+write(*,*) ""
+write(*,*) ""
 
 write(*,*) "For uniform x, n=100"
 write(*,*) "Maximal error in approximation of function is:", &
