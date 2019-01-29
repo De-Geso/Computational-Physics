@@ -1,3 +1,7 @@
+! Approximate the function f(x)=(1+10*x^2)^-1 and its derivative using
+! Chebyshev polyomials up to the 100th order. Coefficients are found
+! using Gauss Jordan elimination to solve Ax=B, where x are the zeros
+! of the maximum order Chebyshev polynomial.
 ! Compile with: gfortran -O3 -fdefault-real-8 GJChebyshevZeros100.f90
 
 program GJChebyshevZeros10
@@ -43,6 +47,7 @@ do j=1,n-1
 	end do
 end do
 
+! Solve the matrices
 call GaussJordan (n, y, Exact, Coefficients)
 call GaussJordan (n-1, yP, ExactP, CoefficientsP)
 
@@ -57,27 +62,32 @@ forall (q=1:p-1)
 	xFP(q) = (xF(q+1)+xF(q))/2.0
 end forall
 
+! Use coefficients and Chebyshev polynomials to approximate function
 do l=1,p
 	ApproxF = 0
 	do m=1,n
 		ApproxF = ApproxF + Coefficients(m) * &
 			ChebyshevT(xF(l),m-1)
 	end do
+	! Record function's maximal error, and its position
 	if (abs(DiffF) < abs(ExactF(l)-ApproxF)) then
 		LocF = xF(l)
 		DiffF = ExactF(l)-ApproxF
 	end if
 	write(*,*) xF(l), ApproxF, ExactF(l)
 end do
+
 write(*,*) ""
 write(*,*) ""
 
+! Use coefficients and Chebyshev polynomials to approximate derivative
 do l=1,p-1
 	ApproxFP = 0
 	do m=1,n-1
 		ApproxFP = ApproxFP + CoefficientsP(m) * &
 			ChebyshevT(xFP(l),m-1)
 	end do
+	! Record derivative's maximal error, and its position
 	if (abs(DiffFP) < abs(ExactFP(l)-ApproxFP)) then
 		LocFP = xFP(l)
 		DiffFP = ExactFP(l)-ApproxFP
@@ -98,7 +108,6 @@ write(*,*) ""
 contains
 
 ! Solve Ax = B using Gauss-Jordan elimination
-! A gets destroyed, answer will be returned in B
 recursive subroutine GaussJordan (n, A, B, Coefficients)
 	integer n, i, j, k, l
 	real A(n,n), B(n), C(n,n), D(n), Coefficients(n)
@@ -126,6 +135,7 @@ recursive subroutine GaussJordan (n, A, B, Coefficients)
 		end if
 	end do
 	
+	! Back substitute to solve for coefficients
 	Coefficients(n) = D(row(n))/C(n,row(n))
 	do k = n-1,1,-1
 		Coefficients(k) = D(row(k))

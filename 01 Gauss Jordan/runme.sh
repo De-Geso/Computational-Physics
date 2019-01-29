@@ -1,3 +1,10 @@
+# Things may not work right out of the box, as bash might not have
+# permissions to run this file. The terminal will complain something
+# like "./runme.sh: permission denied". If that is the case, please
+# enter:
+# chmod u+x runme.sh
+# in the terminal while in the folder containing runme.sh
+
 gfortran -O3 -fdefault-real-8 GJGeneral.f90 -o General.out
 ./General.out
 

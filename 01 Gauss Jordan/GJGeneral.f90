@@ -28,9 +28,9 @@ recursive subroutine GaussJordan (n, A, B)
 	integer row(n), col(n), pivot(1)
 	forall (i = 1:n) row(i) = i
 	forall (j = 1:n) col(j) = j
-	! col is superfluous
+	! col is superfluous, decided not to implement complete pivot
 	
-!	Show original matrix	
+!	Show original matrix to track changes
 !	write (*,*) A(:,row(:))
 !	write (*,*) ""
 !	write (*,*) B(row(:))
@@ -63,6 +63,7 @@ recursive subroutine GaussJordan (n, A, B)
 		end if
 	end do
 	
+	! Back substitute to solve for x
 	x(n) = B(row(n))/A(n,row(n))
 	do k = n-1,1,-1
 		x(k) = B(row(k))
