@@ -6,7 +6,7 @@
 # in the terminal while in the folder containing runme.sh
 
 # answer question #2
-gfortran -O3 -fdefault-real-8 dp2.f90 -o question2.out
+gfortran -O3 -fdefault-real-8 double_pendulum.f90 -o question2.out
 ./question2.out > data2
 mv fort.1 data2
 mv fort.2 animation2

@@ -1,7 +1,8 @@
-! double_pendulum.f90  -  simple chaotic evolution demo
-! compile with: gfortran -O3 -fdefault-real-8 double_pendulum.f90 -lcfitsio [-lcurl]
+! double_pendulum.f90 - model a chaotic double pendulum system, where each arm has
+! equal mass and length
+! compile with: gfortran -O3 -fdefault-real-8 double_pendulum.f90
 
-program doublePendulum; implicit none
+program double_pendulum2; implicit none
 
 ! physical constants
 real, parameter :: pi = 4.D0*DATAN(1.D0)
@@ -14,7 +15,7 @@ real, parameter :: l = 1.0
 ! characteristic timestep
 real, parameter :: dt = sqrt(l/g)/100.0
 
-real :: th1(2) = (/ pi, 0.0 /)
+real :: th1(2) = (/ pi/3.0, 0.0 /)
 real :: th2(2) = (/ -pi/3.0, 0.0 /)
 real :: data(4,1,1)
 integer i
@@ -25,9 +26,10 @@ data(:,1,1) = integrate(th1(1), th2(1), 100.0*sqrt(l/g), dt)
 
 contains
 
+! integrate and output some information about the system
 function integrate(th1, th2, t, dt)
 	real th1, th2, t, dt, integrate(4)
-	real u(4), E0; integer n
+	real u(4), E0, cartesian (2,2); integer n
 	
 	! start from a given position at rest
 	u = [th1, th2, 0.0, 0.0]; E0 = Etot(u)
@@ -37,8 +39,11 @@ function integrate(th1, th2, t, dt)
 	
 	do i = 1,n
 		call gl10(u, dt)
-!		write (*,'(4g24.16)') i*dt, u(1), u(2), Etot(u)/E0 - 1.0
+		
+		cartesian = polar2cart(u(1),u(2))
+		write (1,'(4g24.16)') i*dt, cartesian(2,:), Etot(u)/E0 - 1.0
 		call animation(u(1),u(2))
+		
 	end do
 
 	call gl10(u,t-n*dt)
@@ -46,6 +51,10 @@ function integrate(th1, th2, t, dt)
 	! return state at time t
 	integrate = u
 end function
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! CALCULATIONS USED TO CHANGE THE STATE OF THE SYSTEM
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 ! evaluate derivatives
 subroutine evalf(u, dudt)
@@ -98,18 +107,9 @@ subroutine gl10(y, dt)
         y = y + matmul(g,b)*dt
 end subroutine gl10
 
-! converts given angles to cartesian coordinates and writes out the
-! positions of the origin, and the tips of both rods to make a pretty
-! animation
-subroutine animation (th1, th2)
-	real th1, th2, cartesian (2,2)
-	write (*,*) 0.0, 0.0
-	cartesian = polar2cart(th1, th2)
-	write (*,*) cartesian (1,:)
-	write (*,*) cartesian (2,:)
-	write (*,*) ""
-	write (*,*) ""
-end subroutine
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! CALCULATIONS USED TO DETERMINE THE ENERGY OF THE SYSTEM
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 ! potential for double pendulum
 pure function Epot(th1,th2); intent(in) th1, th2
@@ -118,7 +118,7 @@ pure function Epot(th1,th2); intent(in) th1, th2
 	Epot = -g*l*m*(2*cos(th1)+cos(th2))
 end function Epot
 
-! total energy of the dynamical system
+! total energy for the double pendulum
 pure function Ekin(u); intent(in) u
         real u(4), Ekin
         
@@ -133,6 +133,24 @@ pure function Etot(u); intent(in) u
 	Etot = Ekin(u) + Epot(u(1),u(2))
 end function Etot
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! CALCULATIONS TO DETERMINE CARTESIAN POSITION OF SYSTEM FOR OUTPUT
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+! converts given angles to cartesian coordinates and writes out the
+! positions of the origin, and the tips of both rods to make a pretty
+! animation
+subroutine animation (th1, th2)
+	real th1, th2, cartesian (2,2)
+	write (2,*) 0.0, 0.0
+	cartesian = polar2cart(th1, th2)
+	write (2,*) cartesian (1,:)
+	write (2,*) cartesian (2,:)
+	write (2,*) ""
+	write (2,*) ""
+end subroutine
+
+! converts polar coordinates to cartesian coordinates
 function polar2cart (th1, th2); intent(in) th1, th2
 	real th1, th2, polar2cart(2,2), x(2), y(2)
 	
