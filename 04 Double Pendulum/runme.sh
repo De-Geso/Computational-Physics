@@ -5,9 +5,12 @@
 # chmod u+x runme.sh
 # in the terminal while in the folder containing runme.sh
 
-# answer question #2
+#####################
+# ANSWER QUESTION #2#
+#####################
+
 gfortran -O3 -fdefault-real-8 double_pendulum.f90 -o question2.out
-./question2.out > data2
+./question2.out
 mv fort.1 data2
 mv fort.2 animation2
 
@@ -39,4 +42,26 @@ EOFMarker
 # old one, so that you're still in the same convinient spot. It's pretty
 # satisfying to watch regardless.
 
-# answer question #3
+####################
+#ANSWER QUESTION #3#
+####################
+
+# plot.py doesn't actually work on my machine, so hopefully I use it
+# correctly here.
+
+gfortran -O3 -fdefault-real-8 -fopenmp double_pendulum_flip.f90 -lcfitsio -o question3.out
+./question3.out -3.14159265359 3.14159265359 -3.14159265359 3.14159265359
+#./plot.py
+mv data.fit zoom1.fit
+mv fort.1 zoom1.txt
+
+gfortran -O3 -fdefault-real-8 -fopenmp double_pendulum_zoom.f90 -lcfitsio -o question3zoom.out
+./question3zoom.out -2.0 -1.0 1.5 2.5
+#./plot.py
+mv data.fit zoom2.fit
+mv fort.1 zoom2.txt
+
+./question3zoom.out -1.6 -1.8 1.9 2.1
+#./plot.py
+mv data.fit zoom3.fit
+mv fort.1 zoom3.fit
