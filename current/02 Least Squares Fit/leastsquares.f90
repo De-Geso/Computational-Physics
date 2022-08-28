@@ -1,3 +1,4 @@
+! leastsquares.f90
 ! Linear least squares fit
 ! Compile with: gfortran -O3 -fdefault-real-8 leastsquares.f90 -llapack
 ! Run with: ./a.out < Assignment\ #2.dat
